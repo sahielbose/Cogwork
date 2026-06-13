@@ -1,0 +1,20 @@
+{
+  "name": "@cogwork/evals",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "eval:live": "COGWORK_EVAL_MODE=live vitest run --project evals"
+  },
+  "dependencies": {
+    "@cogwork/builder": "workspace:*",
+    "@cogwork/connectors": "workspace:*",
+    "@cogwork/spec": "workspace:*"
+  }
+}
