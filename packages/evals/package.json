@@ -10,7 +10,7 @@
   },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "eval:live": "COGWORK_EVAL_MODE=live vitest run --project evals"
+    "eval:live": "COGWORK_EVAL_MODE=live vitest run"
   },
   "dependencies": {
     "@cogwork/builder": "workspace:*",
