@@ -25,6 +25,7 @@
     "db:push": "pnpm --filter @cogwork/db db:push",
     "db:generate": "pnpm --filter @cogwork/db db:generate",
     "db:migrate": "pnpm --filter @cogwork/db db:migrate",
+    "worker": "pnpm --filter @cogwork/scheduler worker",
     "eval:live": "pnpm --filter @cogwork/evals eval:live"
   },
   "devDependencies": {

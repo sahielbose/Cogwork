@@ -26,6 +26,31 @@ export async function startManualRun(
   return { runId: run.id, ...result };
 }
 
+/** Start a run from a webhook (or other trigger), passing trigger context. */
+export async function startTriggeredRun(
+  workflowId: string,
+  triggerSource: "webhook" | "schedule" | "api",
+  trigger?: Record<string, unknown>,
+): Promise<{ runId: string } & RunResult> {
+  const db = getDb();
+  const wf = await getWorkflow(db, workflowId);
+  if (!wf) throw new Error("Workflow not found");
+  const run = await createRun(db, {
+    workflowId,
+    workflowVersion: wf.version,
+    triggerSource,
+    status: "queued",
+  });
+  const result = await executeRun({
+    runId: run.id,
+    spec: wf.spec,
+    db,
+    trigger,
+    runMode: COGWORK_RUN_MODE,
+  });
+  return { runId: run.id, ...result };
+}
+
 /** Resume a paused run from DB state (after an approval is resolved). */
 export async function resumeRun(runId: string): Promise<RunResult> {
   const db = getDb();
