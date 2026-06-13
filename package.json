@@ -1,0 +1,47 @@
+{
+  "name": "cogwork",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open-source, AI-native workflow automation. Describe it. Review it. Let it run.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp"]
+  },
+  "scripts": {
+    "typecheck": "turbo run typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "db:push": "pnpm --filter @cogwork/db db:push",
+    "db:generate": "pnpm --filter @cogwork/db db:generate",
+    "db:migrate": "pnpm --filter @cogwork/db db:migrate",
+    "eval:live": "pnpm --filter @cogwork/evals eval:live"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.13.0",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0",
+    "vitest": "^3.0.0"
+  }
+}
