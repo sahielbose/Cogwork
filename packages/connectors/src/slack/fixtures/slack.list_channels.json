@@ -1,0 +1,9 @@
+{
+  "channels": [
+    { "id": "C0ENG", "name": "engineering", "is_member": true },
+    { "id": "C0GEN", "name": "general", "is_member": true },
+    { "id": "C0GTM", "name": "go-to-market", "is_member": true },
+    { "id": "C0RND", "name": "random", "is_member": false },
+    { "id": "D0ME", "name": "@me", "is_member": true }
+  ]
+}
