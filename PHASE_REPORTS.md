@@ -20,3 +20,20 @@ One section per phase at completion (tests, what works, blockers, commit count).
   - CI workflow files staged in `ci/` pending a `gh auth refresh -s workflow` (token lacks `workflow` scope). See `ci/README.md`.
   - DB tests use embedded pglite so the green gate never needs Docker; `db:push` verified against real Postgres.
 - **Commits this phase (incl. Stage 0 bootstrap):** 43.
+
+## Phase 1 — complete (tag v0.1-phase1)
+
+**Outcome:** workflows run on their own — schedules fire, webhooks trigger runs, runs retry and resume, approvals survive restarts. All code-complete in fixture mode.
+
+- **Works:**
+  - **Scheduler (pg-boss):** `@cogwork/scheduler` syncs per-workflow cron schedules from the DB and runs a queue worker (`runWorkflowJob`). **Verified against real Postgres**: cron registered + a queued job dequeued and executed to success. Sync logic unit-tested with a fake scheduler.
+  - **Webhook triggers:** `POST /api/hooks/:path` resolves the active workflow and runs it with the body as `{{ trigger.payload }}` (engine test confirms the binding resolves).
+  - **Retries with backoff:** transient failure → retry → success; exhausted retries → run marked `failed` (a real bug was caught here: failed runs weren't setting terminal status — now fixed).
+  - **Partial-failure resume:** inject a failure at step N → resume skips steps 1..N-1 with **no re-invoke** (verified by call counts).
+  - **Durable approval pause/resume:** an approval resolved after a fresh `executeRun` (simulated restart) continues from DB state to success.
+  - **Idempotency:** `(run_id, step_id, item_index)` keys + reuse-on-success guard → retries don't double-invoke.
+  - **OAuth refresh + `needs_reauth`:** `ensureFreshAccessToken` (refresh-when-expiring, carry refresh token, fail→reauth) + DB helpers to store refreshed tokens and flag dead connections. Code built; exercised live at go-live. Mocked tests.
+  - **Cost/token tracking** per run; failed-run notice + "Open in Builder to fix it" link in Run detail.
+- **Tests:** 105 passing across 18 files (added engine reliability, scheduler sync/handler, OAuth refresh, connection helpers).
+- **Blockers/notes:** pg-boss firing isn't in the green gate (it needs a running Postgres + queue); it's covered by a fake-scheduler unit test plus a one-off real verification. The scheduler worker is a separate process: `pnpm worker`.
+- **Commits this phase:** 5 (focused — much of the reliability layer was already real in the Phase-0 engine; Phase 1 hardened it, added the scheduler/webhooks/refresh, and proved it).
