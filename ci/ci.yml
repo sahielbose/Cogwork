@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  COGWORK_CONNECTORS: fixture
+  # CI runs entirely on fixtures + a mocked LLM — no live third-party creds.
+  # DB tests use embedded pglite, so no Postgres service is required.
+  ENCRYPTION_KEY: ${{ secrets.CI_ENCRYPTION_KEY != '' && secrets.CI_ENCRYPTION_KEY || 'Y29nd29ya190ZXN0X2VuY3J5cHRpb25fa2V5XzMyYg==' }}
+  AUTH_SECRET: ci-auth-secret-not-real
+
+jobs:
+  green-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test
+
+      - name: Build
+        run: pnpm build

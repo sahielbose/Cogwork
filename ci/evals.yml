@@ -1,0 +1,36 @@
+name: Evals (live)
+
+# Live generation evals against the real Anthropic API. Run manually or nightly.
+# Asserts structural properties of generated specs (tools used, trigger type,
+# every binding resolves) — tolerant to LLM nondeterminism. Not part of the
+# per-push green gate.
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * *" # 08:00 UTC nightly
+
+env:
+  COGWORK_CONNECTORS: fixture
+  COGWORK_EVAL_MODE: live
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+jobs:
+  live-evals:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.repository_owner == 'sahielbose' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Run live evals
+        run: pnpm eval:live
