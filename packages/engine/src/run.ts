@@ -128,6 +128,7 @@ export async function executeRun(opts: ExecuteRunOptions): Promise<RunResult> {
     const patch: Parameters<typeof updateRun>[2] = { tokenInput, tokenOutput, costUsd };
     if (status !== "awaiting_approval") {
       const finishedAt = now();
+      patch.status = status; // terminal status (succeeded | failed)
       patch.finishedAt = finishedAt;
       patch.durationMs = finishedAt.getTime() - startedAt.getTime();
       if (error) patch.error = error;
