@@ -13,3 +13,4 @@ Format: `YYYY-MM-DD HH:MM  StageX  done|BLOCKED|note: <message>  [commit shortsh
 2026-06-13 14:44  StageB  note: DB helper/integration tests use embedded pglite (real Postgres in WASM) so the green gate never depends on Docker; db:push/db:migrate target real Postgres via DATABASE_URL.
 2026-06-13 15:05  Stage0  done: monorepo bootstrap green (typecheck+lint+test+build all pass on empty repo); 8 logical commits.
 2026-06-13 15:06  Stage0  BLOCKED: `git push` of .github/workflows/* rejected — gh OAuth token lacks `workflow` scope. Workaround: CI defs staged in ci/ (reviewable, ready); human runs `gh auth refresh -s workflow` then moves them (see ci/README.md). Does not affect local green gate.
+2026-06-13 15:18  StageA  done: packages/spec — schema (WorkflowSpecSchema), binding resolver + condition grammar, semantic validator (5 checks of §4.4) + approval inference. 35 tests (resolver + validator table cases). Green gate ✓.
