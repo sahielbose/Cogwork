@@ -1,0 +1,54 @@
+{
+  "messages": [
+    {
+      "id": "msg_1001",
+      "threadId": "thr_1001",
+      "from": "Priya Nair <priya@acme-corp.com>",
+      "to": "you@yourco.com",
+      "subject": "Contract renewal — need your sign-off by Friday",
+      "snippet": "Hi, looping back on the renewal. We need the countersigned MSA by Friday to keep pricing locked...",
+      "date": "2026-06-13T06:12:00Z",
+      "unread": true
+    },
+    {
+      "id": "msg_1002",
+      "threadId": "thr_1002",
+      "from": "GitHub <notifications@github.com>",
+      "to": "you@yourco.com",
+      "subject": "[cogwork] PR #214: engine retry backoff",
+      "snippet": "@dev opened a pull request: add exponential backoff to the engine retry loop...",
+      "date": "2026-06-13T05:40:00Z",
+      "unread": true
+    },
+    {
+      "id": "msg_1003",
+      "threadId": "thr_1003",
+      "from": "Marcus Lee <marcus@designstudio.io>",
+      "to": "you@yourco.com",
+      "subject": "Re: logo concepts",
+      "snippet": "Thanks for the feedback! Attached are three refined directions for the cog mark...",
+      "date": "2026-06-12T22:05:00Z",
+      "unread": true
+    },
+    {
+      "id": "msg_1004",
+      "threadId": "thr_1004",
+      "from": "AWS Billing <no-reply@amazon.com>",
+      "to": "you@yourco.com",
+      "subject": "Your June invoice is available",
+      "snippet": "Your AWS invoice for June 2026 is now available. Total: $412.88...",
+      "date": "2026-06-12T18:30:00Z",
+      "unread": true
+    },
+    {
+      "id": "msg_1005",
+      "threadId": "thr_1005",
+      "from": "Dana Whitfield <dana@partner.vc>",
+      "to": "you@yourco.com",
+      "subject": "Intro to a design partner?",
+      "snippet": "Loved the demo. I'd like to intro you to a team that fits your ICP — are you open to it?...",
+      "date": "2026-06-12T16:18:00Z",
+      "unread": true
+    }
+  ]
+}

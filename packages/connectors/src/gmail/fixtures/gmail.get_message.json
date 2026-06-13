@@ -1,0 +1,12 @@
+{
+  "message": {
+    "id": "msg_1001",
+    "threadId": "thr_1001",
+    "from": "Priya Nair <priya@acme-corp.com>",
+    "to": "you@yourco.com",
+    "subject": "Contract renewal — need your sign-off by Friday",
+    "date": "2026-06-13T06:12:00Z",
+    "body": "Hi,\n\nLooping back on the renewal. We need the countersigned MSA by Friday to keep this year's pricing locked. I've attached the latest redline — only change is the data-retention clause in §7.\n\nCan you confirm by EOD Thursday?\n\nBest,\nPriya",
+    "unread": true
+  }
+}
