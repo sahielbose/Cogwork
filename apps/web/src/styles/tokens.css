@@ -1,0 +1,39 @@
+/* Cogwork design tokens — COGWORK_UI.md §2. Light theme (v1). */
+:root {
+  /* color — neutrals */
+  --ink: #0e0f13;
+  --ink-soft: #2a2d34;
+  --muted: #6b7280;
+  --subtle: #9ca3af;
+  --line: #e6e6ea;
+  --paper: #ffffff;
+  --paper-2: #f8f8fb;
+  --paper-3: #f1f1f6;
+  --graphite: #3a3d46;
+
+  /* color — brand + semantics */
+  --violet: #5b2ee5;
+  --violet-hover: #4a23c4;
+  --violet-tint: #efeaff;
+  --green: #10b981;
+  --green-tint: #e7f8f1;
+  --amber: #f59e0b;
+  --amber-tint: #fef3e2;
+  --red: #ef4444;
+  --red-tint: #fdecec;
+
+  --brand-gradient: linear-gradient(100deg, #6d28d9 0%, #5b2ee5 50%, #4f46e5 100%);
+
+  /* radii */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  /* shadows */
+  --shadow-xs: 0 1px 2px rgba(13, 15, 19, 0.06);
+  --shadow-sm: 0 2px 8px rgba(13, 15, 19, 0.06);
+  --shadow-md: 0 8px 24px rgba(13, 15, 19, 0.08);
+  --shadow-lg: 0 12px 40px rgba(13, 15, 19, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(91, 46, 229, 0.35);
+}
