@@ -191,10 +191,11 @@ export async function listRecentRuns(db: Db, userId: string, limit = 20) {
 export async function updateRun(
   db: Db,
   runId: string,
-  patch: Partial<typeof runs.$inferInsert> & { costUsd?: string | number },
+  patch: Omit<Partial<typeof runs.$inferInsert>, "costUsd"> & { costUsd?: string | number },
 ): Promise<Run | undefined> {
-  const set: Partial<typeof runs.$inferInsert> = { ...patch };
-  if (typeof patch.costUsd === "number") set.costUsd = String(patch.costUsd);
+  const { costUsd, ...rest } = patch;
+  const set: Partial<typeof runs.$inferInsert> = { ...rest };
+  if (costUsd !== undefined) set.costUsd = typeof costUsd === "number" ? String(costUsd) : costUsd;
   const rows = await db.update(runs).set(set).where(eq(runs.id, runId)).returning();
   return rows[0];
 }
