@@ -106,3 +106,45 @@ export function isExpiring(expiresAt: Date | null | undefined, skewMs = 5 * 60 *
   if (!expiresAt) return false;
   return expiresAt.getTime() - Date.now() <= skewMs;
 }
+
+export interface EnsureFreshParams {
+  accessToken: string;
+  refreshToken?: string;
+  expiresAt?: Date | null;
+  config: Pick<OAuthConfig, "tokenUrl">;
+  clientId: string;
+  clientSecret: string;
+  fetch: typeof fetch;
+  skewMs?: number;
+}
+
+/**
+ * Return a non-expiring access token, refreshing it if necessary
+ * (COGWORK_CONTEXT.md §11.3). Built now; exercised live only at go-live. The
+ * caller persists the refreshed tokens and, on failure, flags `needs_reauth`.
+ */
+export async function ensureFreshAccessToken(
+  params: EnsureFreshParams,
+): Promise<{ refreshed: boolean; tokens: TokenSet }> {
+  if (!isExpiring(params.expiresAt, params.skewMs)) {
+    return {
+      refreshed: false,
+      tokens: {
+        accessToken: params.accessToken,
+        refreshToken: params.refreshToken,
+        expiresAt: params.expiresAt ?? undefined,
+      },
+    };
+  }
+  if (!params.refreshToken) {
+    throw new Error("Access token expired and no refresh token is available.");
+  }
+  const tokens = await refreshToken({
+    config: params.config,
+    clientId: params.clientId,
+    clientSecret: params.clientSecret,
+    refreshToken: params.refreshToken,
+    fetch: params.fetch,
+  });
+  return { refreshed: true, tokens };
+}
