@@ -111,6 +111,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.5.0(postcss@8.5.15)
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
       postcss:
         specifier: ^8.4.49
         version: 8.5.15

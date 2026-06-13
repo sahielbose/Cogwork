@@ -1,9 +1,6 @@
-export default function HomePage() {
-  return (
-    <main style={{ padding: 48, fontFamily: "system-ui, sans-serif" }}>
-      <h1>Cogwork</h1>
-      <p>Describe it. Review it. Let it run.</p>
-      <p>Open-source, AI-native workflow automation. (Bootstrapping — Stage 0.)</p>
-    </main>
-  );
+import { redirect } from "next/navigation";
+
+// The marketing home replaces this in Stage I; for now route into the studio.
+export default function RootPage() {
+  redirect("/app");
 }
