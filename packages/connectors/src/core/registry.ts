@@ -78,6 +78,32 @@ export function getToolCatalog(): ToolCatalog {
   );
 }
 
+export interface SerializedAction {
+  name: string;
+  description: string;
+  sideEffect: boolean;
+}
+export interface SerializedConnector {
+  provider: string;
+  authType: "oauth2" | "api_key";
+  scopes: string[];
+  actions: SerializedAction[];
+}
+
+/** JSON-serializable registry metadata for the UI (/api/connectors). */
+export function getConnectorRegistry(): SerializedConnector[] {
+  return listConnectors().map((c) => ({
+    provider: c.provider,
+    authType: c.authType,
+    scopes: c.oauth?.scopes ?? [],
+    actions: c.actions.map((a) => ({
+      name: a.name,
+      description: a.description,
+      sideEffect: a.sideEffect,
+    })),
+  }));
+}
+
 /** Test helper — wipe the registry. */
 export function clearRegistry(): void {
   connectorsByProvider.clear();
