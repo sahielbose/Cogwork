@@ -13,8 +13,12 @@
  */
 
 export interface RunContext {
-  /** stepId -> { outputName: value } for completed steps */
-  steps: Record<string, Record<string, unknown>>;
+  /**
+   * stepId -> output value of a completed step. Usually an object
+   * ({ outputName: value }); for a forEach step it is the aggregated array of
+   * per-item outputs.
+   */
+  steps: Record<string, unknown>;
   /** webhook payload / scheduled context */
   trigger?: Record<string, unknown>;
   /** server-side secrets; never logged */
