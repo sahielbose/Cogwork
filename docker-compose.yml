@@ -1,0 +1,28 @@
+# Local Postgres for Cogwork (self-host + dev). Brings up a single Postgres 16
+# instance with the pgvector extension available (reserved for memory scaling).
+#
+#   docker compose up -d
+#
+# The default published port is 5432. If that conflicts on your machine, set
+# COGWORK_DB_PORT (and DATABASE_URL) to a free port, e.g. 5435.
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: cogwork-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cogwork
+      POSTGRES_PASSWORD: cogwork
+      POSTGRES_DB: cogwork
+    ports:
+      - "${COGWORK_DB_PORT:-5432}:5432"
+    volumes:
+      - cogwork_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cogwork"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  cogwork_pgdata:
