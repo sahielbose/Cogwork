@@ -85,6 +85,57 @@ export async function listConnections(db: Db, userId: string): Promise<Connectio
   return db.select().from(connections).where(eq(connections.userId, userId));
 }
 
+export async function getConnection(db: Db, id: string): Promise<Connection | undefined> {
+  const rows = await db.select().from(connections).where(eq(connections.id, id)).limit(1);
+  return rows[0];
+}
+
+export async function createConnection(
+  db: Db,
+  input: typeof connections.$inferInsert,
+): Promise<Connection> {
+  const rows = await db.insert(connections).values(input).returning();
+  return rows[0]!;
+}
+
+/** Persist refreshed tokens (encrypted) and clear the needs_reauth flag. */
+export async function updateConnectionTokens(
+  db: Db,
+  id: string,
+  tokens: {
+    accessTokenEnc: string;
+    refreshTokenEnc?: string | null;
+    expiresAt?: Date | null;
+    scopes?: string[] | null;
+  },
+): Promise<Connection | undefined> {
+  const rows = await db
+    .update(connections)
+    .set({
+      accessTokenEnc: tokens.accessTokenEnc,
+      refreshTokenEnc: tokens.refreshTokenEnc ?? undefined,
+      expiresAt: tokens.expiresAt ?? null,
+      scopes: tokens.scopes ?? undefined,
+      needsReauth: 0,
+      updatedAt: new Date(),
+    })
+    .where(eq(connections.id, id))
+    .returning();
+  return rows[0];
+}
+
+/** Flag a connection as needing re-authentication (refresh failed / revoked). */
+export async function markConnectionNeedsReauth(
+  db: Db,
+  id: string,
+  needs = true,
+): Promise<void> {
+  await db
+    .update(connections)
+    .set({ needsReauth: needs ? 1 : 0, updatedAt: new Date() })
+    .where(eq(connections.id, id));
+}
+
 // ── Workflows ─────────────────────────────────────────────────────────────────
 export async function listWorkflows(db: Db, userId: string): Promise<Workflow[]> {
   return db
@@ -96,6 +147,27 @@ export async function listWorkflows(db: Db, userId: string): Promise<Workflow[]>
 
 export async function getWorkflow(db: Db, id: string): Promise<Workflow | undefined> {
   const rows = await db.select().from(workflows).where(eq(workflows.id, id)).limit(1);
+  return rows[0];
+}
+
+/** All active, schedule-triggered workflows across users (for the scheduler). */
+export async function listScheduledWorkflows(db: Db): Promise<Workflow[]> {
+  return db
+    .select()
+    .from(workflows)
+    .where(and(eq(workflows.status, "active"), eq(workflows.triggerType, "schedule")));
+}
+
+/** Find a workflow by its webhook path (across users; paths are unique). */
+export async function getWorkflowByWebhookPath(
+  db: Db,
+  path: string,
+): Promise<Workflow | undefined> {
+  const rows = await db
+    .select()
+    .from(workflows)
+    .where(eq(workflows.webhookPath, path))
+    .limit(1);
   return rows[0];
 }
 

@@ -3,9 +3,13 @@ import type { WorkflowSpec } from "@cogwork/spec";
 import type { Db } from "./client";
 import { createTestDb } from "./test-utils";
 import {
+  createConnection,
   createRun,
   createWorkflow,
   deletePreference,
+  getConnection,
+  markConnectionNeedsReauth,
+  updateConnectionTokens,
   findRunStep,
   getRunWithSteps,
   listPendingApprovals,
@@ -150,6 +154,33 @@ describe("runs + steps + approvals", () => {
     const full = await getRunWithSteps(db, run.id);
     expect(full?.steps).toHaveLength(1);
     expect(full?.approvals).toHaveLength(1);
+  });
+});
+
+describe("connections (token refresh + needs_reauth)", () => {
+  it("stores refreshed tokens, clears reauth, and can flag reauth", async () => {
+    const conn = await createConnection(db, {
+      userId,
+      provider: "google",
+      authType: "oauth2",
+      accessTokenEnc: "enc-old",
+      needsReauth: 1,
+    });
+    expect(conn.needsReauth).toBe(1);
+
+    const future = new Date(Date.now() + 3600_000);
+    const updated = await updateConnectionTokens(db, conn.id, {
+      accessTokenEnc: "enc-new",
+      refreshTokenEnc: "enc-refresh",
+      expiresAt: future,
+      scopes: ["a", "b"],
+    });
+    expect(updated!.accessTokenEnc).toBe("enc-new");
+    expect(updated!.needsReauth).toBe(0); // cleared on successful refresh
+
+    await markConnectionNeedsReauth(db, conn.id, true);
+    const reread = await getConnection(db, conn.id);
+    expect(reread!.needsReauth).toBe(1);
   });
 });
 
