@@ -1,0 +1,30 @@
+# Cogwork
+
+> Open-source, AI-native workflow automation. Describe a workflow in plain English; Cogwork compiles it into a typed, validated, executable spec and runs it deterministically with approvals, retries, and full run traces.
+
+Cogwork is Apache-2.0 and self-hostable. The core depends only on Postgres and an LLM provider (Anthropic by default, provider-swappable via the Vercel AI SDK). Connectors run in a credential-free `fixture` mode by default and flip to `live` once OAuth apps are configured.
+
+## How it works
+
+- Describe → the Builder (LLM) compiles natural language into a Workflow Spec (Zod-validated DSL).
+- Review → the spec is semantically validated against the connector registry (tools exist, params type-check, every binding resolves) and shown as a plain-English summary, a visual flow, and optional TypeScript.
+- Run → a deterministic engine interprets the spec step by step, with bindings, retries, idempotency, approval gates on side-effecting actions, partial-failure resume, and per-run cost tracking.
+
+## Key concepts
+
+- Workflow: a saved automation (draft | active | paused) with a trigger (manual | webhook | schedule).
+- Spec: the canonical, JSON-serializable, versioned, executed artifact.
+- Connector: an integration exposing typed actions; side-effecting actions are approval-gated by default.
+- Run / Run step: one execution and its per-step trace (redacted I/O, errors, attempts, tokens, cost).
+- Approval: a pause on a side-effect; resolving it resumes the run from DB state.
+- Memory: per-user preferences injected into the Builder so generation matches your conventions.
+
+## Repository
+
+- Source: https://github.com/sahielbose/Cogwork
+- License: Apache-2.0
+- Stack: Next.js, TypeScript, Drizzle + Postgres, pg-boss, Vercel AI SDK + Anthropic, Zod, @xyflow/react.
+
+## Connectors (v1)
+
+ai.generate, http.request, gmail.*, gcal.*, slack.*, notion.*, github.*, postgres.* (read + guarded execute), apify.run_actor.
