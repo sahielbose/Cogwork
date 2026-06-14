@@ -14,7 +14,7 @@ import {
 import Link from "next/link";
 import { CogMark } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
-import { GITHUB_URL, OSS_SIGNALS } from "@/lib/site";
+import { formatCount, getGithubStats, GITHUB_URL, OSS_SIGNALS } from "@/lib/site";
 import { Terminal } from "./terminal";
 
 export function HowItWorks() {
@@ -39,17 +39,38 @@ export function HowItWorks() {
   );
 }
 
-export function CommunityProof() {
+/** Honest community-proof signals: real GitHub counts when available, else tags. */
+export async function CommunityProof() {
+  const stats = await getGithubStats();
   return (
     <section className="border-y border-line bg-paper-2">
       <div className="mx-auto max-w-container px-6 py-10">
         <div className="eyebrow text-center">Open source, out in the open</div>
         <div className="mt-5 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-ink-soft">
-          {OSS_SIGNALS.map((s) => (
-            <span key={s} className="inline-flex items-center gap-2">
-              <span className="h-1.5 w-1.5 rounded-full bg-violet" /> {s}
-            </span>
-          ))}
+          {stats.live && stats.stars !== null ? (
+            <>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> ★ {formatCount(stats.stars)} on GitHub
+              </span>
+              {stats.forks !== null && (
+                <span className="inline-flex items-center gap-2">
+                  <span className="h-1.5 w-1.5 rounded-full bg-violet" /> {formatCount(stats.forks)} forks
+                </span>
+              )}
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> Apache-2.0
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> Self-hostable
+              </span>
+            </>
+          ) : (
+            OSS_SIGNALS.map((s) => (
+              <span key={s} className="inline-flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> {s}
+              </span>
+            ))
+          )}
           <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-violet hover:underline">
             <Github size={15} /> View on GitHub
           </a>
@@ -157,7 +178,8 @@ export function ConversationalBuilder() {
   );
 }
 
-export function OpenSource() {
+export async function OpenSource() {
+  const stats = await getGithubStats();
   return (
     <section className="relative overflow-hidden bg-ink py-24">
       <div className="pointer-events-none absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(white 1px, transparent 1px)", backgroundSize: "22px 22px" }} />
@@ -211,6 +233,8 @@ export function OpenSource() {
               Open-source, AI-native workflow automation.
             </p>
             <div className="mt-3 flex flex-wrap gap-3 font-mono text-xs text-muted">
+              {stats.live && stats.stars !== null && <span>★ {formatCount(stats.stars)}</span>}
+              {stats.live && stats.forks !== null && <span>⑂ {formatCount(stats.forks)}</span>}
               <span className="inline-flex items-center gap-1">
                 <span className="h-2 w-2 rounded-full bg-violet" /> TypeScript
               </span>
@@ -235,7 +259,17 @@ export function OpenSource() {
   );
 }
 
-export function FinalCTA() {
+export async function FinalCTA() {
+  const stats = await getGithubStats();
+  const signals =
+    stats.live && stats.stars !== null
+      ? [
+          `★ ${formatCount(stats.stars)} on GitHub`,
+          ...(stats.forks !== null ? [`${formatCount(stats.forks)} forks`] : []),
+          "Apache-2.0",
+          "Self-hostable",
+        ]
+      : OSS_SIGNALS;
   return (
     <section className="mx-auto max-w-container px-6 py-24 text-center">
       <h2 className="font-display text-4xl font-bold md:text-5xl">
@@ -255,7 +289,7 @@ export function FinalCTA() {
         </a>
       </div>
       <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-muted">
-        {OSS_SIGNALS.map((s) => (
+        {signals.map((s) => (
           <span key={s}>{s}</span>
         ))}
       </div>

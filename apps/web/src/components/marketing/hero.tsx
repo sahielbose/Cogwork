@@ -1,7 +1,17 @@
 "use client";
 
 import type { WorkflowSpec } from "@cogwork/spec";
-import { Github } from "lucide-react";
+import {
+  Calendar,
+  Github,
+  Mail,
+  MessageSquare,
+  Box,
+  FileText,
+  Search,
+  Sparkles,
+  type LucideIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { FlowCanvas } from "@/components/flow/canvas";
@@ -105,11 +115,25 @@ function useTypedPrompt(text: string): string {
   return shown;
 }
 
+const PROVIDER_ICON: Record<string, LucideIcon> = {
+  gmail: Mail,
+  gcal: Calendar,
+  slack: MessageSquare,
+  ai: Sparkles,
+  notion: FileText,
+  github: Github,
+  apify: Search,
+};
+
 export function Hero() {
   const [active, setActive] = useState(0);
   const demo = DEMOS[active]!;
   const typed = useTypedPrompt(demo.prompt);
   const flow = useMemo(() => specToFlow(demo.spec), [demo.spec]);
+  const providers = useMemo(
+    () => [...new Set(demo.spec.steps.map((s) => s.tool.split(".")[0]!))],
+    [demo.spec],
+  );
 
   return (
     <section className="mx-auto grid max-w-container gap-10 px-6 py-20 lg:grid-cols-2 lg:items-center">
@@ -152,7 +176,26 @@ export function Hero() {
             </button>
           ))}
         </div>
-        <div className="p-4">
+        <div className="flex items-center justify-between gap-3 px-4 pt-4">
+          <div className="flex items-center gap-1.5">
+            {providers.map((p) => {
+              const Icon = PROVIDER_ICON[p] ?? Box;
+              return (
+                <span
+                  key={p}
+                  className="grid h-6 w-6 place-items-center rounded-md border border-line bg-paper-2 text-ink-soft"
+                  title={p}
+                >
+                  <Icon size={13} />
+                </span>
+              );
+            })}
+          </div>
+          <Link href="/login" className="text-xs font-medium text-violet hover:underline">
+            Try this workflow →
+          </Link>
+        </div>
+        <div className="px-4 pb-2 pt-3">
           <p className="min-h-[60px] font-mono text-[13px] text-ink-soft">
             &ldquo;{typed}
             <span className="animate-pulse">|</span>&rdquo;
