@@ -37,3 +37,21 @@ One section per phase at completion (tests, what works, blockers, commit count).
 - **Tests:** 105 passing across 18 files (added engine reliability, scheduler sync/handler, OAuth refresh, connection helpers).
 - **Blockers/notes:** pg-boss firing isn't in the green gate (it needs a running Postgres + queue); it's covered by a fake-scheduler unit test plus a one-off real verification. The scheduler worker is a separate process: `pnpm worker`.
 - **Commits this phase:** 5 (focused — much of the reliability layer was already real in the Phase-0 engine; Phase 1 hardened it, added the scheduler/webhooks/refresh, and proved it).
+
+## Phase 2 — complete (tag v0.2-phase2)
+
+**Outcome:** almost the entire product — all 9 connectors, memory, NL editing, templates, versions, export, audit, broader evals, every app page, and the full marketing site (incl. Open Source).
+
+- **Connectors (9, fixture-backed):** ai, http, gmail, gcal, slack, notion, github, postgres (read + guarded execute — DDL rejected), apify. Every action's fixture passes its own outputSchema.
+- **NL editing:** `editWorkflow` (current spec + instruction → re-validated new spec + step-level diff); chat editing wired in the Builder.
+- **Memory:** preferences API + Memory editor page; preferences are injected into the Builder prompt at compile/edit time.
+- **Templates:** 5 starter templates (all semantically valid) + gallery + clone-to-draft (in-app and on the marketing Demos page).
+- **Versions/rollback:** every save snapshots a version; Workflow detail → Versions tab rolls back.
+- **TS export:** read-only `.workflow.ts` download from Workflow detail.
+- **Audit log:** writes on create/delete/activate/pause/run/approval/template-clone/rollback/preference; Activity view in Settings.
+- **App pages:** Dashboard, Builder (three-pane), Run detail, Connections, Approvals, Templates, Memory, Workflow detail (Overview/Runs/Versions/Settings), Settings.
+- **Marketing site:** Home (interactive hero with tabs + typed prompt + flow-canvas playback, how-it-works, community proof with **honest OSS signals — no investor logos**, why + integration orbit, conversational builder, **Open Source section** with repo card + real terminal quickstart, FAQ, final CTA), Pricing, Integrations directory (live registry), Demos, Docs shell, Legal, `llms.txt`. Verified rendering on a live dev server (all routes 200; screenshot confirmed).
+- **Evals:** broadened golden cases (postgres/github/webhook) alongside the morning-briefing acceptance case; mocked in CI, live nightly.
+- **Tests:** 126 passing across 20 files.
+- **Blockers/notes:** live generation still needs `ANTHROPIC_API_KEY` (unchanged from Phase 0); everything else runs in fixture mode with no creds.
+- **Commits this phase:** 12.
