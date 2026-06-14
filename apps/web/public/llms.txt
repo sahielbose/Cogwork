@@ -2,7 +2,7 @@
 
 > Open-source, AI-native workflow automation. Describe a workflow in plain English; Cogwork compiles it into a typed, validated, executable spec and runs it deterministically with approvals, retries, and full run traces.
 
-Cogwork is Apache-2.0 and self-hostable. The core depends only on Postgres and an LLM provider (Anthropic by default, provider-swappable via the Vercel AI SDK). Connectors run in a credential-free `fixture` mode by default and flip to `live` once OAuth apps are configured.
+Cogwork is MIT and self-hostable. The core depends only on Postgres and an LLM provider (Anthropic by default, provider-swappable via the Vercel AI SDK). Connectors run in a credential-free `fixture` mode by default and flip to `live` once OAuth apps are configured.
 
 ## How it works
 
@@ -22,7 +22,7 @@ Cogwork is Apache-2.0 and self-hostable. The core depends only on Postgres and a
 ## Repository
 
 - Source: https://github.com/sahielbose/Cogwork
-- License: Apache-2.0
+- License: MIT
 - Stack: Next.js, TypeScript, Drizzle + Postgres, pg-boss, Vercel AI SDK + Anthropic, Zod, @xyflow/react.
 
 ## Connectors (v1)

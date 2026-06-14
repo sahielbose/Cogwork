@@ -5,7 +5,7 @@ export const DISCORD_URL = "https://discord.gg/cogwork";
 
 /** Honest, non-fabricated open-source signals (real once the repo is public). */
 export const OSS_SIGNALS = [
-  "Apache-2.0",
+  "MIT",
   "Self-hostable",
   "TypeScript",
   "Bring your own keys",

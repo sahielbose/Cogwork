@@ -58,7 +58,7 @@ export async function CommunityProof() {
                 </span>
               )}
               <span className="inline-flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> Apache-2.0
+                <span className="h-1.5 w-1.5 rounded-full bg-violet" /> MIT
               </span>
               <span className="inline-flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-violet" /> Self-hostable
@@ -194,7 +194,7 @@ export async function OpenSource() {
             </span>
           </h2>
           <p className="mt-4 max-w-lg text-white/70">
-            Cogwork&apos;s engine, connectors, and studio are Apache-2.0. Read every line, self-host
+            Cogwork&apos;s engine, connectors, and studio are MIT. Read every line, self-host
             it, fork it, extend it — no lock-in, no black boxes.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
@@ -210,7 +210,7 @@ export async function OpenSource() {
             </Link>
           </div>
           <div className="mt-6 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-white/50">
-            <span>Apache-2.0</span>
+            <span>MIT</span>
             <span>·</span>
             <span>self-hostable</span>
             <span>·</span>
@@ -226,7 +226,7 @@ export async function OpenSource() {
               <Github size={18} />
               <span className="font-mono text-sm">sahielbose/cogwork</span>
               <span className="ml-auto rounded-full border border-line px-2 py-0.5 text-[10px] font-medium text-muted">
-                Apache-2.0
+                MIT
               </span>
             </div>
             <p className="mt-2 text-sm text-muted">
@@ -239,7 +239,7 @@ export async function OpenSource() {
                 <span className="h-2 w-2 rounded-full bg-violet" /> TypeScript
               </span>
               <span>self-hostable</span>
-              <span>Apache-2.0</span>
+              <span>MIT</span>
             </div>
             <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="mt-4 inline-block">
               <Button size="sm">View on GitHub →</Button>
@@ -266,7 +266,7 @@ export async function FinalCTA() {
       ? [
           `★ ${formatCount(stats.stars)} on GitHub`,
           ...(stats.forks !== null ? [`${formatCount(stats.forks)} forks`] : []),
-          "Apache-2.0",
+          "MIT",
           "Self-hostable",
         ]
       : OSS_SIGNALS;

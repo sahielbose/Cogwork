@@ -15,7 +15,7 @@ const FAQS = [
   },
   {
     q: "Is it really open source? Can I self-host?",
-    a: "Yes — Apache-2.0. Run the whole thing on your own infrastructure with bring-your-own keys.",
+    a: "Yes, it is MIT-licensed. Run the whole thing on your own infrastructure with bring-your-own keys.",
   },
   {
     q: "How do my credentials stay safe?",

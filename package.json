@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "Open-source, AI-native workflow automation. Describe it. Review it. Let it run.",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "type": "module",
   "engines": {
     "node": ">=20"

@@ -7,7 +7,7 @@ export default function TermsPage() {
       <p className="mt-2 text-sm text-subtle">Placeholder copy — to be replaced by counsel.</p>
       <div className="mt-6 space-y-4 text-muted">
         <p>
-          Cogwork is open-source software provided under the Apache License 2.0. When you self-host
+          Cogwork is open-source software provided under the MIT License. When you self-host
           Cogwork, you are responsible for the infrastructure it runs on and the credentials you
           connect to it.
         </p>

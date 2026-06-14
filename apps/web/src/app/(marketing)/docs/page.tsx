@@ -55,7 +55,7 @@ export default function DocsPage() {
         <section id="self-hosting">
           <h2 className="font-display text-2xl font-semibold">Self-hosting</h2>
           <p className="mt-3 text-muted">
-            Cogwork is Apache-2.0 and self-hostable. It needs Postgres and an Anthropic key; connectors
+            Cogwork is MIT and self-hostable. It needs Postgres and an Anthropic key; connectors
             run in <code className="font-mono text-sm">fixture</code> mode until you add OAuth apps and flip{" "}
             <code className="font-mono text-sm">COGWORK_CONNECTORS=live</code>. Run the scheduler with{" "}
             <code className="font-mono text-sm">pnpm worker</code>.

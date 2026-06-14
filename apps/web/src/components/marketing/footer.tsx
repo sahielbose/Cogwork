@@ -17,7 +17,7 @@ const COLUMNS: { title: string; links: { label: string; href: string; external?:
       { label: "GitHub", href: GITHUB_URL, external: true },
       { label: "Self-host guide", href: "/docs" },
       { label: "Contributing", href: GITHUB_URL, external: true },
-      { label: "License (Apache-2.0)", href: GITHUB_URL, external: true },
+      { label: "License (MIT)", href: GITHUB_URL, external: true },
       { label: "For AI agents (llms.txt)", href: "/llms.txt", external: true },
     ],
   },
