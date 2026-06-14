@@ -33,7 +33,7 @@ echo "AUTH_SECRET=$(openssl rand -base64 32)"    >> .env
 pnpm db:push
 
 # 5. run
-pnpm dev   # http://localhost:3000
+pnpm dev   # http://localhost:4000
 ```
 
 > If port 5432 is taken on your machine, set `COGWORK_DB_PORT` for the container and point `DATABASE_URL` at it (e.g. `:5435`).
