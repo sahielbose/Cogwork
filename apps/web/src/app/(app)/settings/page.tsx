@@ -44,6 +44,14 @@ export default async function SettingsPage() {
       </Card>
 
       <Card className="p-5">
+        <div className="text-sm font-semibold mb-1">Billing</div>
+        <p className="text-sm text-muted">
+          You&apos;re on the self-host plan — unlimited and free. Hosted plans with metered
+          executions and tool credits arrive with the hosted service.
+        </p>
+      </Card>
+
+      <Card className="p-5">
         <div className="text-sm font-semibold mb-3">Activity</div>
         {audit.length === 0 ? (
           <p className="text-sm text-muted">No activity yet.</p>

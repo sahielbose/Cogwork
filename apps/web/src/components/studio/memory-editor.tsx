@@ -112,10 +112,15 @@ function PrefRow({
 }) {
   const [value, setValue] = useState(display(pref.value));
   const dirty = value !== display(pref.value);
+  const updated =
+    typeof pref.updatedAt === "string" ? pref.updatedAt.slice(0, 10) : pref.updatedAt.toISOString().slice(0, 10);
   return (
     <div className="flex items-center gap-3 p-4">
-      <span className="w-56 truncate font-mono text-xs text-ink-soft">{pref.key}</span>
+      <span className="w-48 truncate font-mono text-xs text-ink-soft">{pref.key}</span>
       <Input value={value} onChange={(e) => setValue(e.target.value)} className="flex-1" />
+      <span className="hidden w-24 shrink-0 text-right text-[11px] text-subtle sm:inline">
+        updated {updated}
+      </span>
       <Button size="sm" variant="secondary" disabled={busy || !dirty} onClick={() => onSave(pref.key, value)}>
         Save
       </Button>
