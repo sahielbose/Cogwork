@@ -1,9 +1,12 @@
 "use client";
 
 import {
+  BookCopy,
+  Brain,
   Home,
   Inbox,
   PlugZap,
+  Settings,
   Sparkles,
   type LucideIcon,
 } from "lucide-react";
@@ -38,6 +41,9 @@ export function AppShell({
     { href: "/builder", label: "Builder", icon: Sparkles },
     { href: "/approvals", label: "Approvals", icon: Inbox, badge: approvalsCount },
     { href: "/connections", label: "Connections", icon: PlugZap },
+    { href: "/templates", label: "Templates", icon: BookCopy },
+    { href: "/memory", label: "Memory", icon: Brain },
+    { href: "/settings", label: "Settings", icon: Settings },
   ];
 
   const title =
