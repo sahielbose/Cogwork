@@ -22,6 +22,16 @@ const inputs: Record<string, unknown> = {
   "slack.post_message": { channel: "@me", text: "Daily brief" },
   "slack.list_channels": {},
   "slack.get_thread": { channel: "C0ENG", ts: "1718200000.000100" },
+  "notion.query_database": { databaseId: "db_1" },
+  "notion.create_page": { parent: "db_1", title: "New page" },
+  "notion.update_page": { pageId: "page_1", properties: { Status: "Done" } },
+  "github.list_issues": { repo: "sahielbose/cogwork", state: "open" },
+  "github.create_issue": { repo: "sahielbose/cogwork", title: "Bug" },
+  "github.comment": { repo: "sahielbose/cogwork", number: 214, body: "On it" },
+  "postgres.query": { sql: "select 1" },
+  "postgres.execute": { sql: "update users set x=1" },
+  "apify.run_actor": { actorId: "apify/web-scraper", input: { query: "engineers" } },
+  "http.request": { url: "https://api.example.com/v1/ping", method: "GET" },
 };
 
 describe("getToolCatalog", () => {
@@ -46,6 +56,12 @@ describe("getToolCatalog", () => {
     expect(byName["gmail.list_messages"]).toBe(false);
     expect(byName["slack.list_channels"]).toBe(false);
     expect(byName["ai.generate"]).toBe(false);
+    expect(byName["notion.create_page"]).toBe(true);
+    expect(byName["github.create_issue"]).toBe(true);
+    expect(byName["postgres.execute"]).toBe(true);
+    expect(byName["postgres.query"]).toBe(false);
+    expect(byName["apify.run_actor"]).toBe(false);
+    expect(byName["http.request"]).toBe(false);
   });
 });
 
