@@ -1,9 +1,11 @@
 "use client";
 
-import { ChevronDown, ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, RotateCcw } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Badge, statusToBadge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ApprovalActions } from "@/components/studio/approval-actions";
 import { formatDuration } from "@/lib/utils";
@@ -52,9 +54,21 @@ export function RunDetail({
   run: RunData;
   workflow: { id: string; name: string };
 }) {
+  const router = useRouter();
   const [open, setOpen] = useState<Record<string, boolean>>({});
+  const [retrying, setRetrying] = useState(false);
   const headBadge = statusToBadge(run.status);
   const tokens = run.tokenInput + run.tokenOutput;
+
+  async function retry() {
+    setRetrying(true);
+    try {
+      await fetch(`/api/runs/${run.id}/retry`, { method: "POST" });
+      router.refresh();
+    } finally {
+      setRetrying(false);
+    }
+  }
 
   const steps = [...run.steps].sort((a, b) => {
     const ta = a.startedAt ? new Date(a.startedAt).getTime() : 0;
@@ -83,12 +97,19 @@ export function RunDetail({
         </div>
       </div>
 
-      {run.error && (
+      {(run.status === "failed" || run.error) && (
         <Card className="border-red bg-red-tint p-4 text-sm text-ink-soft">
-          <strong className="text-red">Run failed.</strong> {run.error}{" "}
-          <Link href={`/builder?id=${workflow.id}`} className="text-violet hover:underline">
-            Open in Builder to fix it →
-          </Link>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+              <strong className="text-red">Run failed.</strong> {run.error}{" "}
+              <Link href={`/builder?id=${workflow.id}`} className="text-violet hover:underline">
+                Open in Builder to fix it →
+              </Link>
+            </div>
+            <Button size="sm" variant="secondary" disabled={retrying} onClick={retry}>
+              <RotateCcw size={14} /> {retrying ? "Retrying…" : "Retry from failed"}
+            </Button>
+          </div>
         </Card>
       )}
 
