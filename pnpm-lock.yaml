@@ -220,6 +220,12 @@ importers:
       '@cogwork/connectors':
         specifier: workspace:*
         version: link:../connectors
+      '@cogwork/db':
+        specifier: workspace:*
+        version: link:../db
+      '@cogwork/engine':
+        specifier: workspace:*
+        version: link:../engine
       '@cogwork/spec':
         specifier: workspace:*
         version: link:../spec
