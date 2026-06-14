@@ -13,7 +13,7 @@ App boots: `docker compose up -d && pnpm db:push && pnpm dev` → http://localho
 | Route | Exists | Loads | Controls wired | Status |
 |---|---|---|---|---|
 | `/` Home (hero, how-it-works, community proof, why+orbit, conversational, Open Source, FAQ, CTA) | ✓ | 200 | | _auditing_ |
-| `/pricing` | ✓ | 200 | | _auditing_ |
+| ~~`/pricing`~~ | removed | — | Cogwork is free/open-source — pricing removed entirely | REMOVED |
 | `/integrations` (live registry) | ✓ | 200 | | _auditing_ |
 | `/demos` (templates gallery) | ✓ | 200 | | _auditing_ |
 | `/docs` (shell) | ✓ | 200 | | _auditing_ |
@@ -96,7 +96,7 @@ Parallel audit (11 agents over all clusters): **37 findings — 0 high, 21 mediu
 ### Marketing
 - **FIXED** Integrations directory: search box + category filter chips + one-line description + Available badge + per-connector **detail page** (`/integrations/[provider]`).
 - **FIXED** Docs: added the **API** section (sidebar + content).
-- **FIXED** Pricing: added a comparison/FAQ block.
+- **REMOVED** Pricing: the `/pricing` page, the nav/footer Pricing links, and the Settings Billing section were deleted — Cogwork is free and open source (no tiers, no billing).
 - **FIXED** Community proof / Final CTA / Open-Source repo card / nav: render the GitHub **stat shape** (★ stars · forks · contributors) from a live GitHub API fetch with an honest static fallback (no fabricated numbers).
 - **FIXED** Hero: integration-icon row + "Try this workflow →".
 

@@ -13,7 +13,6 @@ export async function MarketingNav() {
       </Link>
       <nav className="hidden items-center gap-6 text-sm text-ink-soft md:flex">
         <Link href="/demos" className="hover:text-ink">Demos</Link>
-        <Link href="/pricing" className="hover:text-ink">Pricing</Link>
         <Link href="/integrations" className="hover:text-ink">Integrations</Link>
         <Link href="/docs" className="hover:text-ink">Docs</Link>
         <a href={GITHUB_URL} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 hover:text-ink">

@@ -16,8 +16,8 @@ export default function TermsPage() {
           file in the repository for the full terms that govern your use of the code.
         </p>
         <p>
-          For the hosted service, additional terms covering acceptable use, availability, and billing
-          will apply. This page is a placeholder and does not constitute the final agreement.
+          Cogwork is free and open source. This page is a placeholder and does not constitute the
+          final agreement.
         </p>
       </div>
     </article>

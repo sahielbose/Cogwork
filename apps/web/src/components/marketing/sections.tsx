@@ -276,7 +276,7 @@ export async function FinalCTA() {
         Ship your first <span className="text-violet">workflow</span> today.
       </h2>
       <p className="mx-auto mt-4 max-w-xl text-muted">
-        Describe it, review it, let it run — free to start, open source forever.
+        Describe it, review it, let it run — free and open source forever.
       </p>
       <div className="mt-7 flex flex-wrap justify-center gap-3">
         <Link href="/login">
