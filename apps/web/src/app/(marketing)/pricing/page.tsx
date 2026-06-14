@@ -71,6 +71,31 @@ export default function PricingPage() {
         ))}
       </div>
       <p className="mt-8 text-center text-sm text-muted">All plans can run fully self-hosted at no cost.</p>
+
+      <div className="mx-auto mt-16 max-w-2xl">
+        <h2 className="text-center font-display text-2xl font-bold">Pricing FAQ</h2>
+        <div className="mt-6 space-y-4">
+          {[
+            {
+              q: "What counts as an execution?",
+              a: "One run of a workflow — whether triggered manually, on a schedule, or by webhook. Steps within a run don't count separately.",
+            },
+            {
+              q: "What are tool credits?",
+              a: "A pass-through wallet for metered usage like LLM tokens and Apify. Self-host and bring your own keys to avoid them entirely.",
+            },
+            {
+              q: "Can I really self-host for free?",
+              a: "Yes — the whole platform is Apache-2.0. Run it on your own infrastructure with no execution or workflow limits.",
+            },
+          ].map((f) => (
+            <div key={f.q} className="rounded-lg border border-line bg-paper p-5">
+              <div className="font-semibold text-ink">{f.q}</div>
+              <p className="mt-1 text-sm text-muted">{f.a}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

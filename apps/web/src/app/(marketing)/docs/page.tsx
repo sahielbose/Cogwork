@@ -7,6 +7,7 @@ const SECTIONS = [
   { id: "concepts", label: "Core concepts" },
   { id: "self-hosting", label: "Self-hosting" },
   { id: "writing", label: "Writing workflows" },
+  { id: "api", label: "API" },
 ];
 
 export default function DocsPage() {
@@ -68,6 +69,26 @@ export default function DocsPage() {
             tool and binding, and shows you a plain-English summary and a visual flow. Refine by
             chatting; export the TypeScript whenever you want it.
           </p>
+        </section>
+
+        <section id="api">
+          <h2 className="font-display text-2xl font-semibold">API</h2>
+          <p className="mt-3 text-muted">
+            All endpoints live under <code className="font-mono text-sm">/api</code> and use your
+            session (or a <code className="font-mono text-sm">cw_…</code> API key, later). Highlights:
+          </p>
+          <ul className="mt-3 space-y-1.5 font-mono text-[13px] text-ink-soft">
+            <li>POST /api/builder/compile — prompt → validated spec + summary + code</li>
+            <li>POST /api/builder/edit — spec + instruction → revised spec + diff</li>
+            <li>POST /api/builder/explain — spec → plain-English summary</li>
+            <li>GET/POST /api/workflows · GET/PATCH/DELETE /api/workflows/:id</li>
+            <li>POST /api/workflows/:id/run · /activate · /pause · GET /export · GET /runs</li>
+            <li>GET /api/runs/:id · POST /api/runs/:id/retry · /cancel</li>
+            <li>GET /api/approvals · POST /api/approvals/:id/approve · /reject</li>
+            <li>POST /api/hooks/:path — external webhook trigger</li>
+            <li>GET /api/preferences · PUT/DELETE /api/preferences/:key</li>
+            <li>GET /api/templates · POST /api/templates/:id/clone · GET /api/connectors</li>
+          </ul>
         </section>
       </article>
     </div>
