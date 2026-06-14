@@ -67,7 +67,7 @@ function extractJson(text: string): unknown {
 }
 
 /** The real LLM call: generateObject (primary) with a generateText fallback. */
-function defaultGenerate(model: string): GenerateFn {
+export function defaultGenerate(model: string): GenerateFn {
   return async ({ system, messages }) => {
     try {
       const { object, usage } = await generateObject({
@@ -95,16 +95,19 @@ function defaultGenerate(model: string): GenerateFn {
   };
 }
 
-export async function compileWorkflow(opts: CompileOptions): Promise<CompileResult> {
-  const catalog = opts.catalog ?? getToolCatalog();
-  const preferences =
-    opts.preferences ??
-    (opts.db && opts.userId ? await loadPreferencesMap(opts.db, opts.userId) : {});
-  const system = buildSystemPrompt(catalog, preferences);
-  const generate = opts.generate ?? defaultGenerate(opts.model ?? DEFAULT_COMPILE_MODEL);
-  const maxRepairs = opts.maxRepairs ?? 3;
-
-  const messages: GenerateArgs["messages"] = [{ role: "user", content: opts.prompt }];
+/**
+ * Shared generate → validate → repair loop. Used by both compile (NL → spec)
+ * and edit (instruction → revised spec). Returns the first valid spec or null.
+ */
+export async function repairLoop(args: {
+  system: string;
+  messages: GenerateArgs["messages"];
+  catalog: ToolCatalog;
+  generate: GenerateFn;
+  maxRepairs: number;
+}): Promise<CompileResult> {
+  const { system, catalog, generate, maxRepairs } = args;
+  const messages = [...args.messages];
   const usage: Usage = { input: 0, output: 0 };
 
   for (let attempt = 0; attempt <= maxRepairs; attempt++) {
@@ -146,4 +149,21 @@ export async function compileWorkflow(opts: CompileOptions): Promise<CompileResu
     usage,
     attempts: maxRepairs + 1,
   };
+}
+
+export async function compileWorkflow(opts: CompileOptions): Promise<CompileResult> {
+  const catalog = opts.catalog ?? getToolCatalog();
+  const preferences =
+    opts.preferences ??
+    (opts.db && opts.userId ? await loadPreferencesMap(opts.db, opts.userId) : {});
+  const system = buildSystemPrompt(catalog, preferences);
+  const generate = opts.generate ?? defaultGenerate(opts.model ?? DEFAULT_COMPILE_MODEL);
+
+  return repairLoop({
+    system,
+    messages: [{ role: "user", content: opts.prompt }],
+    catalog,
+    generate,
+    maxRepairs: opts.maxRepairs ?? 3,
+  });
 }

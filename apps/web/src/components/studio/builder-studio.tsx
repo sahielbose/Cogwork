@@ -54,10 +54,12 @@ export function BuilderStudio({
     setGenerating(true);
     setNotice(null);
     try {
-      const res = await fetch("/api/builder/compile", {
+      // If a spec already exists, this is an edit; otherwise a fresh compile.
+      const editing = Boolean(spec);
+      const res = await fetch(editing ? "/api/builder/edit" : "/api/builder/compile", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ prompt }),
+        body: JSON.stringify(editing ? { spec, instruction: prompt } : { prompt }),
       });
       const data = await res.json();
       if (!res.ok) {
