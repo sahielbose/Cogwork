@@ -65,7 +65,9 @@ export default async function DashboardPage() {
               return (
                 <div key={w.id} className="flex items-center gap-4 p-4">
                   <div className="flex-1 min-w-0">
-                    <div className="font-medium text-ink truncate">{w.name}</div>
+                    <Link href={`/workflows/${w.id}`} className="font-medium text-ink truncate hover:text-violet">
+                      {w.name}
+                    </Link>
                     <div className="text-xs text-muted">
                       {w.triggerType === "schedule"
                         ? `Schedule · ${w.scheduleCron}`
