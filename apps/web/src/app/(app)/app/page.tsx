@@ -4,6 +4,7 @@ import { Badge, statusToBadge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { RunButton } from "@/components/studio/run-button";
+import { StatusToggle } from "@/components/studio/status-toggle";
 import { currentUser } from "@/lib/auth";
 import { getDb } from "@/lib/server";
 import { formatDuration, timeAgo } from "@/lib/utils";
@@ -19,15 +20,24 @@ function Stat({ label, value }: { label: string; value: string }) {
   );
 }
 
-export default async function DashboardPage() {
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string }>;
+}) {
+  const { q } = await searchParams;
   const user = await currentUser();
   const db = getDb();
-  const [workflows, recent] = await Promise.all([
+  const [allWorkflows, recent] = await Promise.all([
     listWorkflows(db, user!.id),
     listRecentRuns(db, user!.id, 50),
   ]);
+  const query = (q ?? "").trim().toLowerCase();
+  const workflows = query
+    ? allWorkflows.filter((w) => w.name.toLowerCase().includes(query))
+    : allWorkflows;
 
-  const active = workflows.filter((w) => w.status === "active").length;
+  const active = allWorkflows.filter((w) => w.status === "active").length;
   const weekAgo = Date.now() - 7 * 86400_000;
   const runs7d = recent.filter((r) => new Date(r.run.createdAt).getTime() > weekAgo);
   const succeeded = runs7d.filter((r) => r.run.status === "succeeded").length;
@@ -53,7 +63,11 @@ export default async function DashboardPage() {
 
         {workflows.length === 0 ? (
           <Card className="p-10 text-center">
-            <p className="text-muted">No workflows yet. Describe one to get started.</p>
+            <p className="text-muted">
+              {query
+                ? `No workflows match "${query}".`
+                : "No workflows yet. Describe one to get started."}
+            </p>
             <Link href="/builder" className="inline-block mt-4">
               <Button>Open the Builder →</Button>
             </Link>
@@ -78,7 +92,8 @@ export default async function DashboardPage() {
                   </div>
                   <Badge kind={b.kind}>{b.label}</Badge>
                   <RunButton workflowId={w.id} />
-                  <Link href={`/builder?id=${w.id}`}>
+                  <StatusToggle id={w.id} status={w.status} />
+                  <Link href={`/workflows/${w.id}`}>
                     <Button size="sm" variant="ghost">
                       Open
                     </Button>

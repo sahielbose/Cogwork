@@ -12,9 +12,11 @@ import {
 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { CogMark } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -36,6 +38,8 @@ export function AppShell({
   runMode: "fixture" | "live";
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [search, setSearch] = useState("");
   const nav: NavItem[] = [
     { href: "/app", label: "Home", icon: Home },
     { href: "/builder", label: "Builder", icon: Sparkles },
@@ -98,9 +102,24 @@ export function AppShell({
       </aside>
 
       <div className="flex flex-col min-w-0">
-        <header className="h-16 flex items-center justify-between px-6 border-b border-line bg-paper">
-          <h1 className="text-lg font-display font-semibold">{title}</h1>
-          <div className="flex items-center gap-3">
+        <header className="h-16 flex items-center justify-between gap-4 px-6 border-b border-line bg-paper">
+          <h1 className="text-lg font-display font-semibold shrink-0">{title}</h1>
+          <form
+            className="hidden flex-1 max-w-sm md:block"
+            onSubmit={(e) => {
+              e.preventDefault();
+              router.push(search.trim() ? `/app?q=${encodeURIComponent(search.trim())}` : "/app");
+            }}
+          >
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search workflows…"
+              aria-label="Search workflows"
+              className="h-9"
+            />
+          </form>
+          <div className="flex items-center gap-3 shrink-0">
             <span
               className={cn(
                 "inline-flex items-center gap-1.5 rounded-full px-2.5 h-[22px] text-[11px] font-medium",
