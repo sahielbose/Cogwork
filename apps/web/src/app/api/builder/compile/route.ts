@@ -1,4 +1,4 @@
-import { compileWorkflow } from "@cogwork/builder";
+import { compileWorkflow, generateCode } from "@cogwork/builder";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getDb, isResponse, requireUser } from "@/lib/server";
@@ -33,7 +33,8 @@ export async function POST(req: Request) {
       userId: user.id,
       db: getDb(),
     });
-    return NextResponse.json(result);
+    const codePreview = result.spec ? generateCode(result.spec) : null;
+    return NextResponse.json({ ...result, codePreview });
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "Generation failed." },
