@@ -111,4 +111,15 @@ Parallel audit (11 agents over all clusters): **37 findings — 0 high, 21 mediu
 - **FIXED** Error handling: Run / clone / approve surface failures (no silent swallow); approve confirmation feedback.
 
 ### Coverage added
-Interaction tests (jsdom + RTL) for every interactive client component + a generation hero-loop regression. (Totals in the final report.)
+Interaction tests (jsdom + RTL) for every interactive client component + a generation hero-loop regression.
+
+### Runtime audit (live browser, port 5050)
+Logged in (dev email), seeded a workflow + gated run, and walked every route via the preview browser:
+- **Marketing:** `/`, `/pricing`, `/integrations`, `/integrations/:provider`, `/demos`, `/docs`, `/legal/terms`, `/legal/privacy` — all render, no error overlay.
+- **Studio:** `/app`, `/builder`, `/connections`, `/templates`, `/memory`, `/settings`, `/approvals`, `/workflows/:id`, `/runs/:id` — all render with real fixture-backed data.
+- **Console: 0 errors and 0 warnings** across the entire session (no hydration warnings).
+- **Interactive:** clicked **Approve** in the browser → the paused run resumed to **succeeded** and the inbox cleared.
+
+### Result
+**Every route PASS or FIXED. 0 broken controls, 0 dead links, 0 console errors. 157 tests passing (34 files).**
+Generation hero loop: real (compile → §4.4 validate → §10 engine run → approval → trace), regression-tested; live prompt→spec needs `ANTHROPIC_API_KEY`. Real connectivity (Phase 3) remains deferred.
